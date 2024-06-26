@@ -1,9 +1,11 @@
 use crate::dns::structures::header::Header;
+use crate::dns::structures::question::Question;
+use crate::dns::structures::record::Record;
 
 struct DnsPacket{
     header: Header,
     question: Vec<Question>,
-    answer: Vec<Answer>,
-    authority: Vec<Authority>,
-    additional: Vec<Additional>
+    answer: Vec<Record>,
+    authority: Vec<Record>,
+    additional: Vec<Record>
 }
