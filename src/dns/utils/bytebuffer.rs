@@ -5,7 +5,7 @@ pub struct BytePacketBuffer {
 }
 
 impl BytePacketBuffer{
-    pub fn get_u8(&mut self) -> Option<u8> {
+    pub fn get_mut_u8(&mut self) -> Option<u8> {
         if self.pointer < self.buffer.len() {
             let temp = self.buffer[self.pointer];
             self.pointer += 1;
@@ -15,7 +15,7 @@ impl BytePacketBuffer{
         None
     }
 
-    pub fn get_u16(&mut self) -> Option<u16> {
+    pub fn get_mut_u16(&mut self) -> Option<u16> {
         if self.pointer < self.buffer.len() - 1 {
             let temp: u16 = u16::from_be_bytes([self.buffer[self.pointer], self.buffer[self.pointer+1]]);
             self.pointer += 2;
@@ -25,10 +25,19 @@ impl BytePacketBuffer{
         None
     }
 
-    pub fn get(&mut self, num: usize) -> Option<&[u8]>{
+    pub fn get_mut(&mut self, num: usize) -> Option<&[u8]>{
         if self.pointer + num < self.buffer.len() {
             let temp = &self.buffer[self.pointer .. self.pointer+num];
             self.pointer += num;
+            return Some(temp);
+        }
+
+        None
+    }
+
+    pub fn get(&self, num: usize) -> Option<&[u8]>{
+        if self.pointer + num < self.buffer.len() {
+            let temp = &self.buffer[self.pointer .. self.pointer+num];
             return Some(temp);
         }
 
@@ -47,6 +56,23 @@ impl BytePacketBuffer{
             pos += 1
         }
 
-        return Ok(BytePacketBuffer { buffer, pointer: 0 })
+        Ok(BytePacketBuffer { buffer, pointer: 0 })
+    }
+
+    pub fn find_byte_pos(&self, target: u8) -> Option<usize>{
+        for (i, byte) in self.buffer[self.pointer..].iter().enumerate(){
+            if *byte == target{
+                return Some(self.pointer+i)
+            }
+        } 
+        None
+    }
+
+    pub fn len(&self) -> usize{
+        self.buffer.len()
+    }
+
+    pub fn get_pointer(&self) -> usize{
+        self.pointer
     }
 }

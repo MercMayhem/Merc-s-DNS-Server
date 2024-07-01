@@ -62,9 +62,9 @@ impl Header {
     }
 
     pub fn from_buffer(buffer: &mut BytePacketBuffer) -> Result<Header, Box<dyn Error>>{
-        let header_bytes = buffer.get(12).unwrap();
+        let header_bytes = buffer.get_mut(12).unwrap();
         if header_bytes.len() != 12 {
-            return Err("Not enough bytes for header".into())
+            return Err("Not enough bytes for header".to_string().into())
         }
 
         Ok(Header::parse_header(header_bytes))
