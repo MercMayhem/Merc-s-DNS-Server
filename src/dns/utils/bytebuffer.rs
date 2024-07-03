@@ -25,11 +25,11 @@ impl BytePacketBuffer{
         None
     }
 
-    pub fn get_mut(&mut self, num: usize) -> Option<&[u8]>{
+    pub fn get_mut(&mut self, num: usize) -> Option<Vec<u8>>{
         if self.pointer + num < self.buffer.len() {
             let temp = &self.buffer[self.pointer .. self.pointer+num];
             self.pointer += num;
-            return Some(temp);
+            return Some(temp.to_vec());
         }
 
         None
@@ -42,6 +42,10 @@ impl BytePacketBuffer{
         }
 
         None
+    }
+
+    pub fn get_from_ptr(&self, ptr: usize, num: usize) -> &[u8]{
+        &self.buffer[ptr .. ptr + num]
     }
 
     pub fn new(bytes: &Vec<u8>) -> Result<BytePacketBuffer, String>{
@@ -65,6 +69,16 @@ impl BytePacketBuffer{
                 return Some(self.pointer+i)
             }
         } 
+        None
+    }
+
+    pub fn find_byte_pos_after_ptr(&self, ptr: usize, target: u8) -> Option<usize>{
+        for (i, byte) in self.buffer[ptr..].iter().enumerate(){
+            if *byte == target{
+                return Some(ptr+i)
+            }
+        }
+
         None
     }
 

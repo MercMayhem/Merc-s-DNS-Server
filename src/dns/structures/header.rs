@@ -67,7 +67,7 @@ impl Header {
             return Err("Not enough bytes for header".to_string().into())
         }
 
-        Ok(Header::parse_header(header_bytes))
+        Ok(Header::parse_header(&header_bytes[..]))
     }
 
 
@@ -84,7 +84,7 @@ mod tests{
         let mut buf = BytePacketBuffer::new(&query).unwrap();
         let header = Header::from_buffer(&mut buf).unwrap();
 
-        println!("{:#?}", header)
+        // println!("{:#?}", header)
     }
 
     #[test]
@@ -93,6 +93,6 @@ mod tests{
         let mut buf = BytePacketBuffer::new(&query).unwrap();
         let header = Header::from_buffer(&mut buf).unwrap();
 
-        println!("{:#?}", header)
+        // println!("{:#?}", header)
     }
 }
