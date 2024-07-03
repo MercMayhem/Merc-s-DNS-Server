@@ -41,8 +41,6 @@ impl Question {
         false
     }
 
-
-
     fn parse_r_type(buffer: &mut BytePacketBuffer) -> u16{
         return buffer.get_mut_u16().unwrap();
     }
@@ -51,7 +49,8 @@ impl Question {
         let name: String = Question::parse_label(buffer);
         let r_type: u16 = Question::parse_r_type(buffer);
 
-        todo!();
+        let _ = buffer.get_mut_u16();
+        return Question { name, r_type }
     }
 
     pub fn from_buffer(buffer: &mut BytePacketBuffer) -> Result<Question, Box<dyn Error>>{
