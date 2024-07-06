@@ -9,7 +9,7 @@ impl BytePacketBuffer{
         if self.pointer < self.buffer.len() {
             let temp = self.buffer[self.pointer];
             self.pointer += 1;
-            Some(temp);
+            return Some(temp);
         }
 
         None
@@ -19,7 +19,7 @@ impl BytePacketBuffer{
         if self.pointer < self.buffer.len() - 1 {
             let temp: u16 = u16::from_be_bytes([self.buffer[self.pointer], self.buffer[self.pointer+1]]);
             self.pointer += 2;
-            Some(temp);
+            return Some(temp);
         }
 
         None
