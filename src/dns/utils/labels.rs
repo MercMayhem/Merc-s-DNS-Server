@@ -1,6 +1,6 @@
 mod helper;
 
-use crate::dns::structures::components::record_preamble::RecordPreamble;
+use crate::dns::structures::{components::record_preamble::RecordPreamble, record::Record};
 use super::{super::structures::question::Question, bytebuffer::BytePacketBuffer};
 use helper::parse_label_helper;
 
@@ -15,6 +15,12 @@ impl LabelContainer for Question{
 }
 
 impl LabelContainer for RecordPreamble{
+    fn parse_label(buffer: &mut BytePacketBuffer) -> String {
+        return parse_label_helper(buffer);
+    }
+}
+
+impl LabelContainer for Record{
     fn parse_label(buffer: &mut BytePacketBuffer) -> String {
         return parse_label_helper(buffer);
     }
