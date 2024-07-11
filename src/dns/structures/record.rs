@@ -1,5 +1,5 @@
 use std::{net::{Ipv4Addr, Ipv6Addr}, error::Error};
-use crate::dns::utils::bytebuffer::BytePacketBuffer;
+use crate::dns::utils::{bytebuffer::BytePacketBuffer, bufparse::BufParse};
 use super::components::record_preamble::RecordPreamble;
 use crate::dns::utils::labels::LabelContainer;
 
@@ -104,7 +104,10 @@ impl Record {
         None
     }
 
-    pub fn from_buffer(buffer: &mut BytePacketBuffer) -> Result<Record, Box<dyn Error>>{
+}
+
+impl BufParse for Record{
+    fn from_buffer(buffer: &mut BytePacketBuffer) -> Result<Record, Box<dyn Error>>{
         let preamble = RecordPreamble::from_buffer(buffer)?;
 
         if !Record::valid_size(buffer){
@@ -176,6 +179,7 @@ mod tests{
     use std::fs;
     use crate::dns::utils::bytebuffer::BytePacketBuffer;
     use super::Record;
+    use crate::dns::utils::bufparse::BufParse;
 
     #[test]
     fn check_a_record_parsing(){

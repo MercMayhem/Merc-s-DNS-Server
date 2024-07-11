@@ -1,5 +1,5 @@
 use std::error::Error;
-use crate::dns::utils::{bytebuffer::BytePacketBuffer, labels::LabelContainer};
+use crate::dns::utils::{bytebuffer::BytePacketBuffer, labels::LabelContainer, bufparse::BufParse};
 
 #[derive(Debug)]
 pub struct Question{
@@ -52,8 +52,10 @@ impl Question {
         let _ = buffer.get_mut_u16();
         return Question { name, r_type }
     }
+}
 
-    pub fn from_buffer(buffer: &mut BytePacketBuffer) -> Result<Question, Box<dyn Error>>{
+impl BufParse for Question{
+    fn from_buffer(buffer: &mut BytePacketBuffer) -> Result<Question, Box<dyn Error>> {
         if !Question::valid_size(buffer){
             return Err("Wrong Size".to_string().into())
         }
