@@ -47,6 +47,7 @@ impl Question {
 
     fn parse_question(buffer: &mut BytePacketBuffer) -> Question{
         let name: String = Question::parse_label(buffer);
+        let _ = buffer.get_mut_u8();
         let r_type: u16 = Question::parse_r_type(buffer);
 
         let _ = buffer.get_mut_u16();
